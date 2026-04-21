@@ -1,6 +1,11 @@
 // app/layout.tsx
 import "./globals.css";
 
+export const metadata = {
+  title:"SkillUp",
+  description:"A platform to enhance your skills and connect with like-minded individuals.",
+}
+
 export default function RootLayout({
   children,
 }: {
