@@ -78,13 +78,15 @@ const Login = () => {
         // Store token if returned
         if (result.token) {
           localStorage.setItem("authToken", result.token);
-          if (data.rememberMe) {
-            localStorage.setItem("rememberedEmail", data.email);
-          } else {
-            localStorage.removeItem("rememberedEmail");
-          }
         }
 
+        if (result.data.user.role === "STUDENT") {
+          router.push("/student-dashboard");
+        } else if (result.data.user.role === "TUTOR") {
+          router.push("/tutor-dashboard");
+        } else {
+          router.push("/admin-dashboard");
+        }
         await Swal.fire({
           icon: "success",
           title: "Welcome Back! 🎉",
@@ -103,8 +105,6 @@ const Login = () => {
             confirmButton: "px-6 py-2 rounded-xl font-semibold",
           },
         });
-
-        router.push("/dashboard");
       } else {
         await Swal.fire({
           icon: "error",
@@ -316,20 +316,6 @@ const Login = () => {
               )}
             </div>
 
-            {/* Remember Me Checkbox */}
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  {...register("rememberMe")}
-                  className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
-                />
-                <span className="text-sm text-slate-600 group-hover:text-slate-800 transition-colors">
-                  Remember me
-                </span>
-              </label>
-            </div>
-
             {/* Submit Button */}
             <button
               type="submit"
@@ -356,18 +342,6 @@ const Login = () => {
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </button>
           </form>
-
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-slate-400">
-                Or continue with
-              </span>
-            </div>
-          </div>
 
           {/* Sign Up Link */}
           <div className="mt-6 text-center">

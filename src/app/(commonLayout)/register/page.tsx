@@ -17,7 +17,6 @@ import {
   Eye,
   EyeOff,
   Sparkles,
-  Shield,
   Users,
 } from "lucide-react";
 
@@ -76,6 +75,13 @@ const SignUp = () => {
 
       const result = await response.json();
 
+    if (result.data.role === "STUDENT") {
+          router.push("/student-dashboard");
+        } else if (result.data.role === "TUTOR") {
+          router.push("/tutor-dashboard");
+        } else {
+          router.push("/admin-dashboard");
+        }
       if (response.ok) {
         await Swal.fire({
           icon: "success",
@@ -94,7 +100,8 @@ const SignUp = () => {
           },
         });
 
-        router.push("/dashboard");
+        // router.push("/dashboard");
+        
       } else {
         await Swal.fire({
           icon: "error",
