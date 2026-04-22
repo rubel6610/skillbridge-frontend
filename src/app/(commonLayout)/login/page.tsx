@@ -100,7 +100,7 @@ const Login = () => {
         if (result.data.user.role === "STUDENT") {
           router.push("/student-dashboard");
         } else if (result.data.user.role === "TUTOR") {
-          router.push("/tutor-dashboard");
+          router.push("/tutor/dashboard");
         } else {
           router.push("/admin-dashboard");
         }
