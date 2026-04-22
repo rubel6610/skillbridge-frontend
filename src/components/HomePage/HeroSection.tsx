@@ -29,13 +29,13 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href="/signup?role=student" 
+              href="/register" 
               className="bg-white text-indigo-700 px-8 py-3 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
             >
               Start Learning →
             </Link>
             <Link 
-              href="/signup?role=tutor" 
+              href="/register" 
               className="bg-transparent border-2 border-white/80 text-white px-8 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300"
             >
               Become a Tutor

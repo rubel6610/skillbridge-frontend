@@ -75,7 +75,7 @@ const Login = () => {
 
       if (response.ok) {
         // Store token if returned
-        if (result.token) {
+        if (result.data.token) {
           localStorage.setItem("authToken", result.token);
         }
 
