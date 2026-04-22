@@ -75,13 +75,6 @@ const SignUp = () => {
 
       const result = await response.json();
 
-    if (result.data.role === "STUDENT") {
-          router.push("/student-dashboard");
-        } else if (result.data.role === "TUTOR") {
-          router.push("/tutor-dashboard");
-        } else {
-          router.push("/admin-dashboard");
-        }
       if (response.ok) {
         await Swal.fire({
           icon: "success",
@@ -99,14 +92,21 @@ const SignUp = () => {
             confirmButton: "px-6 py-2 rounded-xl font-semibold",
           },
         });
-
+        if (result.data.role === "STUDENT") {
+          router.push("/student-dashboard");
+        } else if (result.data.role === "TUTOR") {
+          router.push("/tutor-dashboard");
+        } else {
+          router.push("/admin-dashboard");
+        }
         // router.push("/dashboard");
-        
       } else {
         await Swal.fire({
           icon: "error",
           title: "Registration Failed",
-          text: result.message || "Unable to create your account. Please try again.",
+          text:
+            result.message ||
+            "Unable to create your account. Please try again.",
           confirmButtonColor: "#4f46e5",
           confirmButtonText: "Try Again",
           customClass: {
@@ -136,29 +136,33 @@ const SignUp = () => {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 p-4 lg:p-8">
       {/* Main Card Container */}
       <div className="flex w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl shadow-indigo-500/10 border border-slate-100 transition-all duration-300 hover:shadow-indigo-500/20">
-        
         {/* --- LEFT PANEL: Branding & Features --- */}
         <div className="relative hidden w-[45%] flex-col justify-between bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-10 text-white lg:flex">
-         
-
           <div className="relative z-10">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <div className="absolute inset-0 rounded-xl bg-indigo-500 blur-md opacity-50" />
                 <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg">
-                  <Sparkles size={20} className="text-white" fill="currentColor" />
+                  <Sparkles
+                    size={20}
+                    className="text-white"
+                    fill="currentColor"
+                  />
                 </div>
               </div>
               <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">
-                EduFlow
+                SkillShare
               </span>
             </div>
             <h1 className="mt-12 text-4xl font-bold leading-tight tracking-tight">
               Master new skills{" "}
-              <span className="block text-slate-300 text-3xl mt-2">with absolute clarity.</span>
+              <span className="block text-slate-300 text-3xl mt-2">
+                with absolute clarity.
+              </span>
             </h1>
             <p className="mt-4 text-slate-300 text-sm leading-relaxed">
-              Join thousands of learners and expert tutors in the most advanced learning platform.
+              Join thousands of learners and expert tutors in the most advanced
+              learning platform.
             </p>
           </div>
 
@@ -173,14 +177,16 @@ const SignUp = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-white">{item.title}</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">{item.sub}</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {item.sub}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="relative z-10 flex items-center gap-4 text-xs text-slate-400">
-            <span>© 2026 EduFlow Inc.</span>
+            <span>© 2026 SkillShare Inc.</span>
             <span className="h-3 w-px bg-slate-600" />
             <span>All rights reserved</span>
           </div>
@@ -220,7 +226,10 @@ const SignUp = () => {
                     {role}
                   </span>
                   {selectedRole === role && (
-                    <CheckCircle2 size={16} className="absolute right-2 top-2 text-indigo-500" />
+                    <CheckCircle2
+                      size={16}
+                      className="absolute right-2 top-2 text-indigo-500"
+                    />
                   )}
                 </button>
               ))}
@@ -307,7 +316,9 @@ const SignUp = () => {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-red-500">{errors.password.message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -326,7 +337,10 @@ const SignUp = () => {
               ) : (
                 <>
                   <span>Create Account</span>
-                  <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform duration-200 group-hover:translate-x-1"
+                  />
                 </>
               )}
             </button>

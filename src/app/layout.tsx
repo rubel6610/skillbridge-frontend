@@ -2,7 +2,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title:"SkillUp",
+  title:"SkillShare",
   description:"A platform to enhance your skills and connect with like-minded individuals.",
 }
 

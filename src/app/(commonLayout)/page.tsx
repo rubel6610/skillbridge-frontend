@@ -1,11 +1,18 @@
-import React from 'react';
+import AdminSection from "@/components/HomePage/AdminSection";
+import HeroSection from "@/components/HomePage/HeroSection";
+import StudentSection from "@/components/HomePage/StudentSection";
+import TutorSection from "@/components/HomePage/TutorSection";
+import React from "react";
 
-const Home = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+const Home:React.FC = () => {
+  return (
+    <div>
+      <HeroSection />
+      <StudentSection />
+      <TutorSection />
+      <AdminSection />
+    </div>
+  );
 };
 
 export default Home;
