@@ -76,7 +76,11 @@ const Login = () => {
       if (response.ok) {
         // Store token if returned
         if (result.data.token) {
-          localStorage.setItem("authToken", result.token);
+          localStorage.setItem("authToken", result.data.token);
+        }
+        if (result.data.user) {
+          localStorage.setItem("user", JSON.stringify(result.data.user));
+          window.dispatchEvent(new Event("authChange"));
         }
 
         await Swal.fire({
@@ -118,7 +122,7 @@ const Login = () => {
           },
         });
       }
-    } catch (error) {
+    } catch {
       await Swal.fire({
         icon: "error",
         title: "Connection Error",

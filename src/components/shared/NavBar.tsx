@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Menu, X, GraduationCap, LogOut, LayoutDashboard, User } from 'lucide-react'
+import { Menu, X, GraduationCap, LogOut, LayoutDashboard } from 'lucide-react'
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -62,12 +62,13 @@ export default function Navbar() {
 
   const getDashboardRoute = () => {
     if (user?.role === 'ADMIN') return '/dashboard/admin'
-    if (user?.role === 'TUTOR') return '/dashboard/tutor'
+    if (user?.role === 'TUTOR') return '/tutor/dashboard'
     return '/dashboard/student'
   }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('authToken')
     localStorage.removeItem('user')
     setUser(null)
     
