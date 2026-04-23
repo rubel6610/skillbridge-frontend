@@ -8,49 +8,18 @@ import {
   Linkedin,
   Youtube,
   Mail,
-  Phone,
-  MapPin,
   Globe,
-  Heart,
   Shield,
   Clock,
   Award,
   Sparkles,
-  ChevronRight,
   Send,
-  GraduationCap,
 } from "lucide-react";
 import Logo from "./Logo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { name: "About Us", href: "/about" },
-    { name: "How It Works", href: "/how-it-works" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Success Stories", href: "/stories" },
-    { name: "Blog", href: "/blog" },
-    { name: "Careers", href: "/careers" },
-  ];
-
-  const forStudents = [
-    { name: "Find Tutors", href: "/tutors" },
-    { name: "Browse Subjects", href: "/subjects" },
-    { name: "Learning Paths", href: "/learning-paths" },
-    { name: "Study Resources", href: "/resources" },
-    { name: "Student FAQ", href: "/faq/students" },
-    { name: "Scholarships", href: "/scholarships" },
-  ];
-
-  const forTutors = [
-    { name: "Become a Tutor", href: "/become-tutor" },
-    { name: "Tutor Dashboard", href: "/tutor-dashboard" },
-    { name: "Teaching Tools", href: "/teaching-tools" },
-    { name: "Tutor Resources", href: "/tutor-resources" },
-    { name: "Tutor FAQ", href: "/faq/tutors" },
-    { name: "Payment & Payouts", href: "/payments" },
-  ];
 
   const support = [
     { name: "Help Center", href: "/help" },

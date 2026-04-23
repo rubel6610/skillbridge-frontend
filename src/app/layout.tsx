@@ -2,9 +2,10 @@
 import "./globals.css";
 
 export const metadata = {
-  title:"SkillShare",
-  description:"A platform to enhance your skills and connect with like-minded individuals.",
-}
+  title: "SkillBridge",
+  description:
+    "A platform to enhance your skills and connect with like-minded individuals.",
+};
 
 export default function RootLayout({
   children,

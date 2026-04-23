@@ -151,7 +151,7 @@ const SignUp = () => {
                 </div>
               </div>
               <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">
-                SkillShare
+                SkillBridge
               </span>
             </div>
             <h1 className="mt-12 text-4xl font-bold leading-tight tracking-tight">
@@ -186,7 +186,7 @@ const SignUp = () => {
           </div>
 
           <div className="relative z-10 flex items-center gap-4 text-xs text-slate-400">
-            <span>© 2026 SkillShare Inc.</span>
+            <span>© 2026 SkillBridge Inc.</span>
             <span className="h-3 w-px bg-slate-600" />
             <span>All rights reserved</span>
           </div>
