@@ -378,16 +378,15 @@ export default function BrowseTutor() {
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                 {filteredTutors.map((tutor) => {
-                  const estimatedPrice = (tutor.hourlyRate / 60) * 60
                   return (
                     <div
                       key={tutor.id}
                       className="group relative rounded-2xl border border-indigo-100 bg-white shadow-sm transition-all hover:shadow-xl hover:border-indigo-300"
                     >
-                      {/* Top gradient bar */}
+                      {/* Top gradient bar
                       <div className={`h-1.5 rounded-t-2xl bg-gradient-to-r ${
                         ['from-violet-400 to-fuchsia-400', 'from-cyan-400 to-blue-400', 'from-emerald-400 to-teal-400', 'from-orange-400 to-rose-400', 'from-indigo-400 to-purple-400'][tutor.id % 5]
-                      }`} />
+                      }`} /> */}
 
                       <div className="p-5">
                         {/* Header */}
@@ -457,15 +456,24 @@ export default function BrowseTutor() {
                           <span className="truncate">{formatAvailability(tutor.availability)}</span>
                         </div>
 
-                        {/* Book button */}
-                        <button
-                          onClick={() => openBookingModal(tutor)}
-                          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-2.5 font-semibold text-white transition hover:shadow-lg hover:shadow-indigo-200"
-                        >
-                          <CalendarDays size={16} />
-                          Book session · ${estimatedPrice.toFixed(0)}
-                          <ChevronRight size={14} />
-                        </button>
+                        {/* Action buttons */}
+                        <div className="mt-4 grid grid-cols-2 gap-3">
+                          <button
+                            onClick={() => router.push(`/tutors/${tutor.id}`)}
+                            className="flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-white py-2.5 font-semibold text-indigo-700 transition hover:bg-indigo-50"
+                          >
+                            <BookOpen size={16} />
+                            Details
+                          </button>
+                          <button
+                            onClick={() => openBookingModal(tutor)}
+                            className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-2.5 font-semibold text-white transition hover:shadow-lg hover:shadow-indigo-200"
+                          >
+                            <CalendarDays size={16} />
+                            Book
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )
