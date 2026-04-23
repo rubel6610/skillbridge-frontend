@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/useAuth'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,21 +45,9 @@ type TutorProfileResponse = {
   }
 }
 
-const getStoredToken = () => {
-  if (typeof window === 'undefined') {
-    return ''
-  }
-
-  const tokenCandidates = [
-    localStorage.getItem('authToken'),
-    localStorage.getItem('token'),
-  ]
-
-  return tokenCandidates.find((token) => token && token !== 'undefined') ?? ''
-}
-
 const ProfilePage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
+  const { token, user, isLoading: isAuthLoading } = useAuth()
   const [isLoadingProfile, setIsLoadingProfile] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasExistingProfile, setHasExistingProfile] = useState(false)
@@ -81,21 +70,18 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = getStoredToken()
-
       if (!token) {
         setIsLoadingProfile(false)
         return
       }
 
       try {
-        const response = await fetch(`${baseUrl}/tutor/me`, {
+        const response = await fetch(`${baseUrl}/tutors/me`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
-
         const result = await response.json()
 
         if (response.ok && result.data) {
@@ -135,11 +121,9 @@ const ProfilePage = () => {
     }
 
     fetchProfile()
-  }, [baseUrl, reset])
+  }, [baseUrl, reset, token])
 
   const onSubmit = async (data: TutorProfileFormData) => {
-    const token = getStoredToken()
-
     if (!token) {
       await Swal.fire({
         icon: 'warning',
@@ -232,10 +216,10 @@ const ProfilePage = () => {
       : {
           label: 'Pending approval',
           tone: 'bg-amber-50 text-amber-700 border-amber-200',
-        }
+      }
   }, [profile])
 
-  if (isLoadingProfile) {
+  if (isAuthLoading || isLoadingProfile) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-slate-600 shadow-sm">
@@ -257,7 +241,7 @@ const ProfilePage = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                {profile?.user?.name ? `${profile.user.name}'s Profile` : 'Build your tutor profile'}
+                {profile?.user?.name || user?.name ? `${profile?.user?.name || user?.name}'s Profile` : 'Build your tutor profile'}
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-sky-50/90">
                 Add the details students need to trust you, understand your experience,
@@ -278,10 +262,7 @@ const ProfilePage = () => {
             <h2 className="text-xl font-semibold text-slate-900">
               {hasExistingProfile ? 'Update your tutor information' : 'Create your tutor information'}
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
-              This form uses `POST /tutor` for the first save, then `PUT /tutor/me`
-              for future updates.
-            </p>
+        
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -419,13 +400,13 @@ const ProfilePage = () => {
               <div>
                 <p className="text-slate-400">Tutor name</p>
                 <p className="mt-1 font-medium text-slate-700">
-                  {profile?.user?.name || 'Not available yet'}
+                  {profile?.user?.name || user?.name || 'Not available yet'}
                 </p>
               </div>
               <div>
                 <p className="text-slate-400">Email</p>
                 <p className="mt-1 font-medium text-slate-700">
-                  {profile?.user?.email || 'Sign in to load your account'}
+                  {profile?.user?.email || user?.email || 'Sign in to load your account'}
                 </p>
               </div>
               <div>

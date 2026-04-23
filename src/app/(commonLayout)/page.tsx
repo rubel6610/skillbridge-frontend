@@ -1,4 +1,4 @@
-import AdminSection from "@/components/HomePage/AdminSection";
+
 import HeroSection from "@/components/HomePage/HeroSection";
 import StudentSection from "@/components/HomePage/StudentSection";
 import TutorSection from "@/components/HomePage/TutorSection";
@@ -10,7 +10,6 @@ const Home:React.FC = () => {
       <HeroSection />
       <StudentSection />
       <TutorSection />
-      <AdminSection />
     </div>
   );
 };

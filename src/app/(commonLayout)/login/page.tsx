@@ -16,6 +16,7 @@ import {
   Shield,
   LogIn,
 } from "lucide-react";
+import { persistAuth } from "@/lib/auth";
 
 interface LoginFormData {
   email: string;
@@ -74,13 +75,8 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Store token if returned
-        if (result.data.token) {
-          localStorage.setItem("authToken", result.data.token);
-        }
         if (result.data.user) {
-          localStorage.setItem("user", JSON.stringify(result.data.user));
-          window.dispatchEvent(new Event("authChange"));
+          persistAuth(result.data.user, result.data.token);
         }
 
         await Swal.fire({
