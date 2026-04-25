@@ -6,8 +6,8 @@ SkillBridge is a premium 1-on-1 tutoring marketplace that connects passionate le
 
 - **Frontend GitHub:** [https://github.com/rubel6610/skillbridge-frontend](https://github.com/rubel6610/skillbridge-frontend)
 - **Backend GitHub:** [https://github.com/rubel6610/skill-bridge](https://github.com/rubel6610/skill-bridge)
-- **Live Site:** [https://skillbridge-demo.vercel.app](https://skillbridge-demo.vercel.app) (Replace with your actual URL)
-- **Backend API:** [https://skill-bridge-api.onrender.com](https://skill-bridge-api.onrender.com) (Replace with your actual URL)
+- **Live Site:** [https://skillbridge-demo.vercel.app](https://skillbridge-frontend-gamma.vercel.app/) (Replace with your actual URL)
+- **Backend API:** [Render](https://skill-bridge-zp3v.onrender.com) (Replace with your actual URL)
 
 
 ## 🔑 Demo Credentials
@@ -15,8 +15,6 @@ SkillBridge is a premium 1-on-1 tutoring marketplace that connects passionate le
 | Role | Email | Password |
 | :--- | :--- | :--- |
 | **Admin** | `admin@example.com` | `admin123` |
-| **Tutor** | `tutor@example.com` | `password123` |
-| **Student** | `student@example.com` | `password123` |
 
 ## ✨ Key Features
 

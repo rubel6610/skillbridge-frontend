@@ -95,6 +95,7 @@ const StudentBookingsPage = () => {
         body: JSON.stringify({ status: "CANCELLED" }),
       });
       const result = await res.json();
+
       if (!res.ok) throw new Error(result.message || "Failed");
       setBookings((cur) =>
         cur.map((b) =>
