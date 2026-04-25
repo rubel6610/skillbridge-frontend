@@ -138,7 +138,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── HOW IT WORKS ─── */}
-      <section className="bg-white py-20">
+      <section id="how-it-works" className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-12 text-center">
             <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-indigo-100 px-4 py-1.5 text-xs font-semibold text-indigo-700">
