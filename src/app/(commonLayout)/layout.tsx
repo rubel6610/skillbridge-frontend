@@ -15,7 +15,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
       <main className={`flex-1 ${isHome ? "" : "pt-24"}`}>
         {children}
       </main>
-      <Footer />
+      {!["/login", "/register"].includes(pathname) && <Footer />}
     </div>
   );
 };
