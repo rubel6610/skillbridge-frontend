@@ -399,15 +399,7 @@ const AvailabilityPage = () => {
         </section>
 
         <aside className="space-y-4">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900">Backend rules</h3>
-            <ul className="mt-4 space-y-3 text-sm text-slate-600">
-              <li>`dayOfWeek` must be between `0` and `6`.</li>
-              <li>Every slot needs both `startTime` and `endTime`.</li>
-              <li>`startTime` must be earlier than `endTime`.</li>
-              <li>You must create a tutor profile before setting availability.</li>
-            </ul>
-          </div>
+     
 
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
             <h3 className="text-lg font-semibold text-slate-900">Preview</h3>

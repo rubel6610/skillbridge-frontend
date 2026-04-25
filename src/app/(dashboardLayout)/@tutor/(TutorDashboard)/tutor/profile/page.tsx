@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import {
   Briefcase,
+  Check,
   Image as ImageIcon,
+  Layers3,
   LoaderCircle,
   MapPin,
   Save,
@@ -21,10 +23,17 @@ import { Textarea } from '@/components/ui/textarea'
 
 type TutorProfileFormData = {
   bio: string
+  categoryIds: string[]
   hourlyRate: string
   experience: string
   location: string
   imageUrl: string
+}
+
+type CategoryOption = {
+  id: number
+  name: string
+  icon?: string | null
 }
 
 type TutorProfileResponse = {
@@ -37,6 +46,10 @@ type TutorProfileResponse = {
   isApproved: boolean
   avgRating: number
   totalReviews: number
+  categories: {
+    categoryId: number
+    category: CategoryOption
+  }[]
   user: {
     id: number
     name: string
@@ -49,24 +62,60 @@ const ProfilePage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
   const { token, user, isLoading: isAuthLoading } = useAuth()
   const [isLoadingProfile, setIsLoadingProfile] = useState(true)
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasExistingProfile, setHasExistingProfile] = useState(false)
   const [profile, setProfile] = useState<TutorProfileResponse | null>(null)
+  const [availableCategories, setAvailableCategories] = useState<CategoryOption[]>([])
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors, isDirty },
   } = useForm<TutorProfileFormData>({
     defaultValues: {
       bio: '',
+      categoryIds: [],
       hourlyRate: '',
       experience: '',
       location: '',
       imageUrl: '',
     },
   })
+
+  const selectedCategoryIds = watch('categoryIds')
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/tutors/categories`)
+        const result = await response.json()
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Failed to load categories')
+        }
+
+        setAvailableCategories((result.data as CategoryOption[]) ?? [])
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : 'Failed to load categories'
+
+        await Swal.fire({
+          icon: 'error',
+          title: 'Unable to load categories',
+          text: message,
+          confirmButtonColor: '#0284c7',
+        })
+      } finally {
+        setIsLoadingCategories(false)
+      }
+    }
+
+    fetchCategories()
+  }, [baseUrl])
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -90,6 +139,7 @@ const ProfilePage = () => {
           setHasExistingProfile(true)
           reset({
             bio: fetchedProfile.bio ?? '',
+            categoryIds: fetchedProfile.categories.map(({ categoryId }) => String(categoryId)),
             hourlyRate: String(fetchedProfile.hourlyRate ?? ''),
             experience: String(fetchedProfile.experience ?? ''),
             location: fetchedProfile.location ?? '',
@@ -123,6 +173,18 @@ const ProfilePage = () => {
     fetchProfile()
   }, [baseUrl, reset, token])
 
+  const toggleCategory = (categoryId: number) => {
+    const nextCategoryId = String(categoryId)
+    const nextValue = selectedCategoryIds.includes(nextCategoryId)
+      ? selectedCategoryIds.filter((id) => id !== nextCategoryId)
+      : [...selectedCategoryIds, nextCategoryId]
+
+    setValue('categoryIds', nextValue, {
+      shouldDirty: true,
+      shouldValidate: true,
+    })
+  }
+
   const onSubmit = async (data: TutorProfileFormData) => {
     if (!token) {
       await Swal.fire({
@@ -134,10 +196,21 @@ const ProfilePage = () => {
       return
     }
 
+    if (data.categoryIds.length === 0) {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Category required',
+        text: 'Please select at least one tutor category.',
+        confirmButtonColor: '#0284c7',
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
     const payload = {
       bio: data.bio.trim(),
+      categoryIds: data.categoryIds.map((id) => Number(id)),
       hourlyRate: Number(data.hourlyRate),
       experience: Number(data.experience),
       location: data.location.trim(),
@@ -169,6 +242,7 @@ const ProfilePage = () => {
       setHasExistingProfile(true)
       reset({
         bio: savedProfile.bio ?? payload.bio,
+        categoryIds: savedProfile.categories.map(({ categoryId }) => String(categoryId)),
         hourlyRate: String(savedProfile.hourlyRate ?? payload.hourlyRate),
         experience: String(savedProfile.experience ?? payload.experience),
         location: savedProfile.location ?? payload.location,
@@ -216,10 +290,10 @@ const ProfilePage = () => {
       : {
           label: 'Pending approval',
           tone: 'bg-amber-50 text-amber-700 border-amber-200',
-      }
+        }
   }, [profile])
 
-  if (isAuthLoading || isLoadingProfile) {
+  if (isAuthLoading || isLoadingProfile || isLoadingCategories) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-slate-600 shadow-sm">
@@ -241,7 +315,9 @@ const ProfilePage = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                {profile?.user?.name || user?.name ? `${profile?.user?.name || user?.name}'s Profile` : 'Build your tutor profile'}
+                {profile?.user?.name || user?.name
+                  ? `${profile?.user?.name || user?.name}'s Profile`
+                  : 'Build your tutor profile'}
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-sky-50/90">
                 Add the details students need to trust you, understand your experience,
@@ -262,7 +338,6 @@ const ProfilePage = () => {
             <h2 className="text-xl font-semibold text-slate-900">
               {hasExistingProfile ? 'Update your tutor information' : 'Create your tutor information'}
             </h2>
-        
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -283,6 +358,43 @@ const ProfilePage = () => {
               />
               {errors.bio && (
                 <p className="text-sm text-red-500">{errors.bio.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <Label>Tutor categories</Label>
+                <span className="text-sm text-slate-500">
+                  {selectedCategoryIds.length} selected
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {availableCategories.map((category) => {
+                  const isSelected = selectedCategoryIds.includes(String(category.id))
+
+                  return (
+                    <button
+                      key={category.id}
+                      type="button"
+                      onClick={() => toggleCategory(category.id)}
+                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                        isSelected
+                          ? 'border-sky-200 bg-sky-50 text-sky-700'
+                          : 'border-slate-200 bg-white text-slate-600 hover:border-sky-100 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span>{category.name}</span>
+                      {isSelected ? <Check className="h-4 w-4" /> : <Layers3 className="h-4 w-4 text-slate-400" />}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {selectedCategoryIds.length === 0 && (
+                <p className="text-sm text-slate-500">
+                  Select at least one category that matches your teaching area.
+                </p>
               )}
             </div>
 
@@ -410,6 +522,23 @@ const ProfilePage = () => {
                 </p>
               </div>
               <div>
+                <p className="text-slate-400">Categories</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {profile?.categories?.length ? (
+                    profile.categories.map(({ category }) => (
+                      <span
+                        key={category.id}
+                        className="rounded-full bg-sky-50 px-3 py-1 text-xs font-medium text-sky-700"
+                      >
+                        {category.name}
+                      </span>
+                    ))
+                  ) : (
+                    <p className="font-medium text-slate-700">No category selected yet</p>
+                  )}
+                </div>
+              </div>
+              <div>
                 <p className="text-slate-400">Reviews</p>
                 <p className="mt-1 font-medium text-slate-700">
                   {profile ? `${profile.totalReviews} total reviews` : 'No profile yet'}
@@ -428,6 +557,7 @@ const ProfilePage = () => {
             <h3 className="text-lg font-semibold text-slate-900">What to include</h3>
             <ul className="mt-4 space-y-3 text-sm text-slate-600">
               <li>Share your teaching style and the outcomes students can expect.</li>
+              <li>Choose the categories that best represent the subjects you teach.</li>
               <li>Set a realistic hourly rate and total years of experience.</li>
               <li>Add a clear location and optional profile photo URL.</li>
             </ul>

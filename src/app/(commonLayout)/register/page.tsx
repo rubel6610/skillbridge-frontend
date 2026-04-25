@@ -92,14 +92,7 @@ const SignUp = () => {
             confirmButton: "px-6 py-2 rounded-xl font-semibold",
           },
         });
-        if (result.data.role === "STUDENT") {
-          router.push("/student-dashboard");
-        } else if (result.data.role === "TUTOR") {
-          router.push("/tutor-dashboard");
-        } else {
-          router.push("/admin-dashboard");
-        }
-        // router.push("/dashboard");
+        router.push("/login");
       } else {
         await Swal.fire({
           icon: "error",
@@ -115,7 +108,7 @@ const SignUp = () => {
           },
         });
       }
-    } catch (error) {
+    } catch {
       await Swal.fire({
         icon: "error",
         title: "Connection Error",

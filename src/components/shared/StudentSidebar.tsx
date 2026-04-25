@@ -2,42 +2,31 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  CalendarDays,
-  LayoutDashboard,
-  LogOut,
-  UserCircle,
-  Video,
-} from "lucide-react";
+import { BookOpen, LayoutDashboard, LogOut, UserCircle } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 
-const tutorNavItems = [
+const studentNavItems = [
   {
     title: "Dashboard",
-    href: "/tutor/dashboard",
+    href: "/student/dashboard",
     icon: LayoutDashboard,
   },
   {
+    title: "Bookings",
+    href: "/student/bookings",
+    icon: BookOpen,
+  },
+  {
     title: "Profile",
-    href: "/tutor/profile",
+    href: "/student/profile",
     icon: UserCircle,
-  },
-  {
-    title: "Availability",
-    href: "/tutor/availability",
-    icon: CalendarDays,
-  },
-  {
-    title: "Sessions",
-    href: "/tutor/sessions",
-    icon: Video,
   },
 ];
 
-const TutorSidebar = () => {
+const StudentSidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { logout } = useAuth();
@@ -50,12 +39,10 @@ const TutorSidebar = () => {
   return (
     <aside className="w-full border-b border-slate-200 bg-white lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r">
       <div className="sticky top-0 flex flex-col gap-6 px-4 py-6 lg:min-h-screen lg:px-6">
-        <div className="space-y-2">
-          <Logo />
-        </div>
+        <Logo />
 
         <nav className="flex gap-3 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
-          {tutorNavItems.map(({ title, href, icon: Icon }) => {
+          {studentNavItems.map(({ title, href, icon: Icon }) => {
             const isActive = pathname === href;
 
             return (
@@ -65,8 +52,8 @@ const TutorSidebar = () => {
                 className={cn(
                   "flex min-w-fit items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium transition-colors",
                   isActive
-                    ? "border-sky-200 bg-sky-50 text-sky-700"
-                    : "border-slate-200 text-slate-600 hover:border-sky-100 hover:bg-slate-50 hover:text-slate-900",
+                    ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+                    : "border-slate-200 text-slate-600 hover:border-indigo-100 hover:bg-slate-50 hover:text-slate-900",
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -91,4 +78,4 @@ const TutorSidebar = () => {
   );
 };
 
-export default TutorSidebar;
+export default StudentSidebar;

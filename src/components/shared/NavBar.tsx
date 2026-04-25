@@ -1,9 +1,9 @@
 // components/shared/NavBar.tsx
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ChevronDown,
   GraduationCap,
@@ -12,62 +12,59 @@ import {
   Menu,
   UserCircle2,
   X,
-} from 'lucide-react'
+} from "lucide-react";
 
-import { Button } from '@/components/ui/button'
-import { useAuth } from '@/hooks/useAuth'
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Browse Tutors', href: '/tutors' },
-  { label: 'Categories', href: '/categories' },
-  { label: 'About', href: '/about-us' },
-]
+  { label: "Home", href: "/" },
+  { label: "Browse Tutors", href: "/tutors" },
+  { label: "Categories", href: "/categories" },
+  { label: "About", href: "/about-us" },
+];
 
 const getUserMenuItems = (role?: string) => {
-  if (role === 'TUTOR') {
-    return [
-      { label: 'Dashboard', href: '/tutor/dashboard' },
-    ]
+  if (role === "TUTOR") {
+    return [{ label: "Dashboard", href: "/tutor/dashboard" }];
   }
 
-  if (role === 'ADMIN') {
-    return [
-      { label: 'Dashboard', href: '/dashboard/admin' },
-    ]
+  if (role === "ADMIN") {
+    return [{ label: "Admin Panel", href: "/admin" }];
   }
 
-  return [
-    { label: 'Dashboard', href: '/dashboard/student' },
-  ]
-}
+  return [{ label: "Dashboard", href: "/student/dashboard" }];
+};
 
 export default function Navbar() {
-  const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const { user, isLoading, logout, getDashboardRoute } = useAuth()
-  const menuRef = useRef<HTMLDivElement | null>(null)
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user, isLoading, logout, getDashboardRoute } = useAuth();
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
-  const userMenuItems = useMemo(() => getUserMenuItems(user?.role), [user?.role])
+  const userMenuItems = useMemo(
+    () => getUserMenuItems(user?.role),
+    [user?.role],
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!menuRef.current?.contains(event.target as Node)) {
-        setIsUserMenuOpen(false)
+        setIsUserMenuOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    logout()
-    setIsOpen(false)
-    setIsUserMenuOpen(false)
-    router.push('/')
-  }
+    logout();
+    setIsOpen(false);
+    setIsUserMenuOpen(false);
+    router.push("/");
+  };
 
   if (isLoading) {
     return (
@@ -83,7 +80,7 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-    )
+    );
   }
 
   return (
@@ -126,19 +123,27 @@ export default function Navbar() {
                     <UserCircle2 className="h-5 w-5" />
                   </div>
                   <div className="text-left">
-                    <div className="text-sm font-semibold text-slate-900">{user.name}</div>
-                    <div className="text-xs capitalize text-slate-500">{user.role?.toLowerCase()}</div>
+                    <div className="text-sm font-semibold text-slate-900">
+                      {user.name}
+                    </div>
+                    <div className="text-xs capitalize text-slate-500">
+                      {user.role?.toLowerCase()}
+                    </div>
                   </div>
                   <ChevronDown
-                    className={`h-4 w-4 text-slate-500 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`}
+                    className={`h-4 w-4 text-slate-500 transition-transform ${isUserMenuOpen ? "rotate-180" : ""}`}
                   />
                 </button>
 
                 {isUserMenuOpen && (
                   <div className="absolute right-0 top-[calc(100%+0.75rem)] w-64 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-200/70">
                     <div className="mb-3 rounded-2xl bg-slate-50 px-4 py-3">
-                      <p className="text-sm font-semibold text-slate-900">{user.name}</p>
-                      <p className="text-xs text-slate-500">{user.email || 'Signed in user'}</p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {user.email || "Signed in user"}
+                      </p>
                     </div>
 
                     <div className="space-y-1">
@@ -170,10 +175,17 @@ export default function Navbar() {
               </div>
             ) : (
               <>
-                <Button variant="ghost" asChild className="text-gray-600 hover:text-blue-600">
+                <Button
+                  variant="ghost"
+                  asChild
+                  className="text-gray-600 hover:text-blue-600"
+                >
                   <Link href="/login">Sign in</Link>
                 </Button>
-                <Button asChild className="bg-blue-600 text-white hover:bg-blue-700">
+                <Button
+                  asChild
+                  className="bg-blue-600 text-white hover:bg-blue-700"
+                >
                   <Link href="/register">Get Started</Link>
                 </Button>
               </>
@@ -212,8 +224,12 @@ export default function Navbar() {
                       <UserCircle2 className="h-6 w-6" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">{user.name}</div>
-                      <div className="text-xs capitalize text-gray-500">{user.role?.toLowerCase()}</div>
+                      <div className="text-sm font-semibold text-gray-900">
+                        {user.name}
+                      </div>
+                      <div className="text-xs capitalize text-gray-500">
+                        {user.role?.toLowerCase()}
+                      </div>
                     </div>
                   </div>
 
@@ -271,5 +287,5 @@ export default function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }

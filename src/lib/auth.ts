@@ -77,7 +77,8 @@ export const clearStoredAuth = () => {
 }
 
 export const getDashboardRouteByRole = (role?: string) => {
-  if (role === 'ADMIN') return '/dashboard/admin'
-  if (role === 'TUTOR') return '/tutor/dashboard'
-  return '/dashboard/student'
+  const normalised = role?.toUpperCase()
+  if (normalised === 'ADMIN') return '/admin'
+  if (normalised === 'TUTOR') return '/tutor/dashboard'
+  return '/student/dashboard'
 }
