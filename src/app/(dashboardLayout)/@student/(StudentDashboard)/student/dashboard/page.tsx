@@ -63,7 +63,9 @@ const StudentDashboardPage = () => {
 
   const [bookings, setBookings] = useState<StudentBooking[]>([]);
   const [isLoadingBookings, setIsLoadingBookings] = useState(true);
-  const [updatingBookingId, setUpdatingBookingId] = useState<number | null>(null);
+  const [updatingBookingId, setUpdatingBookingId] = useState<number | null>(
+    null,
+  );
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewedBookingIds, setReviewedBookingIds] = useState<number[]>([]);
   const [reviewDraft, setReviewDraft] = useState<ReviewDraft | null>(null);
@@ -250,7 +252,9 @@ const StudentDashboardPage = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">
-                {user?.name ? `${user.name}'s Learning Dashboard` : "Student dashboard"}
+                {user?.name
+                  ? `${user.name}'s Learning Dashboard`
+                  : "Student dashboard"}
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-indigo-50/90">
                 Track upcoming sessions, attend completed lessons, cancel when
@@ -260,7 +264,8 @@ const StudentDashboardPage = () => {
           </div>
 
           <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold">
-            {confirmedBookings.length} upcoming, {completedBookings.length} completed
+            {confirmedBookings.length} upcoming, {completedBookings.length}{" "}
+            completed
           </div>
         </div>
       </section>
@@ -268,15 +273,21 @@ const StudentDashboardPage = () => {
       <div className="grid gap-6 md:grid-cols-3">
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Upcoming sessions</p>
-          <p className="mt-2 text-3xl font-bold text-sky-700">{confirmedBookings.length}</p>
+          <p className="mt-2 text-3xl font-bold text-sky-700">
+            {confirmedBookings.length}
+          </p>
         </div>
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Completed lessons</p>
-          <p className="mt-2 text-3xl font-bold text-emerald-700">{completedBookings.length}</p>
+          <p className="mt-2 text-3xl font-bold text-emerald-700">
+            {completedBookings.length}
+          </p>
         </div>
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Cancelled bookings</p>
-          <p className="mt-2 text-3xl font-bold text-rose-700">{cancelledBookings.length}</p>
+          <p className="mt-2 text-3xl font-bold text-rose-700">
+            {cancelledBookings.length}
+          </p>
         </div>
       </div>
 
@@ -322,8 +333,8 @@ const StudentDashboardPage = () => {
                           {booking.duration} minutes
                         </div>
                         <div className="inline-flex items-center gap-2">
-                          <Wallet className="h-4 w-4 text-indigo-600" />
-                          ${booking.totalPrice.toFixed(2)}
+                          <Wallet className="h-4 w-4 text-indigo-600" />$
+                          {booking.totalPrice.toFixed(2)}
                         </div>
                         <div className="inline-flex items-center gap-2">
                           <ShieldCheck className="h-4 w-4 text-indigo-600" />
@@ -368,7 +379,8 @@ const StudentDashboardPage = () => {
                       {booking.status === "COMPLETED" ? (
                         <>
                           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-                            This session is complete. You can now leave a review.
+                            This session is complete. You can now leave a
+                            review.
                           </div>
                           <Button
                             onClick={() =>
@@ -382,7 +394,9 @@ const StudentDashboardPage = () => {
                             className="rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700"
                           >
                             <MessageSquareQuote className="h-4 w-4" />
-                            {alreadyReviewed ? "Review submitted" : "Leave review"}
+                            {alreadyReviewed
+                              ? "Review submitted"
+                              : "Leave review"}
                           </Button>
                         </>
                       ) : null}
@@ -399,7 +413,8 @@ const StudentDashboardPage = () => {
             })
           ) : (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
-              No bookings yet. Browse tutors and book your first session to start the journey.
+              No bookings yet. Browse tutors and book your first session to
+              start the journey.
             </div>
           )}
         </div>
@@ -415,9 +430,12 @@ const StudentDashboardPage = () => {
           }}
         >
           <div className="w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl">
-            <h3 className="text-2xl font-semibold text-slate-900">Leave a review</h3>
+            <h3 className="text-2xl font-semibold text-slate-900">
+              Leave a review
+            </h3>
             <p className="mt-2 text-sm text-slate-500">
-              Share how the session went so future students can choose confidently.
+              Share how the session went so future students can choose
+              confidently.
             </p>
 
             <div className="mt-6 space-y-5">

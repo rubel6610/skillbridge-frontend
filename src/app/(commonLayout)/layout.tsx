@@ -1,12 +1,20 @@
+"use client";
+
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/NavBar";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="min-h-screen pt-24">{children}</div>
+      <main className={`flex-1 ${isHome ? "" : "pt-24"}`}>
+        {children}
+      </main>
       <Footer />
     </div>
   );
