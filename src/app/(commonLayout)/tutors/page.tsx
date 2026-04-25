@@ -44,14 +44,23 @@ const StarRating = ({ rating }: { rating: number }) => (
       <Star
         key={i}
         size={12}
-        className={i <= Math.round(rating) ? "fill-amber-400 text-amber-400" : "text-slate-200"}
+        className={
+          i <= Math.round(rating)
+            ? "fill-amber-400 text-amber-400"
+            : "text-slate-200"
+        }
       />
     ))}
   </div>
 );
 
 const TutorAvatar = ({ tutor }: { tutor: TutorProfile }) => {
-  const initials = tutor.user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+  const initials = tutor.user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
   const gradients = [
     "from-indigo-400 to-cyan-400",
     "from-emerald-400 to-teal-400",
@@ -62,10 +71,18 @@ const TutorAvatar = ({ tutor }: { tutor: TutorProfile }) => {
   const gradient = gradients[tutor.id % gradients.length];
 
   return tutor.imageUrl ? (
-    <img src={tutor.imageUrl} alt={tutor.user.name} className="h-full w-full object-cover rounded-2xl" />
+    <img
+      src={tutor.imageUrl}
+      alt={tutor.user.name}
+      className="h-full w-full object-cover rounded-2xl"
+    />
   ) : (
-    <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradient} rounded-2xl shadow-inner`}>
-      <span className="text-xl font-bold text-white tracking-tighter">{initials}</span>
+    <div
+      className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradient} rounded-2xl shadow-inner`}
+    >
+      <span className="text-xl font-bold text-white tracking-tighter">
+        {initials}
+      </span>
     </div>
   );
 };
@@ -81,7 +98,9 @@ export default function BrowseTutorPage() {
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
   const [maxPrice, setMaxPrice] = useState<number>(5000);
   const [minRating, setMinRating] = useState(0);
 
@@ -97,7 +116,9 @@ export default function BrowseTutorPage() {
         const categoriesResult = await categoriesRes.json();
 
         setTutors(Array.isArray(tutorsResult.data) ? tutorsResult.data : []);
-        setCategories(Array.isArray(categoriesResult.data) ? categoriesResult.data : []);
+        setCategories(
+          Array.isArray(categoriesResult.data) ? categoriesResult.data : [],
+        );
       } catch (error) {
         console.error("Failed to fetch data", error);
       } finally {
@@ -110,11 +131,14 @@ export default function BrowseTutorPage() {
   const filteredTutors = useMemo(() => {
     return tutors.filter((tutor) => {
       const matchesSearch = [tutor.user.name, tutor.bio, tutor.location]
-        .join(" ").toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesCategory = !selectedCategoryId || 
-        tutor.categories.some(c => c.categoryId === selectedCategoryId);
-      
+        .join(" ")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const matchesCategory =
+        !selectedCategoryId ||
+        tutor.categories.some((c) => c.categoryId === selectedCategoryId);
+
       const matchesPrice = tutor.hourlyRate <= maxPrice;
       const matchesRating = tutor.avgRating >= minRating;
 
@@ -133,11 +157,13 @@ export default function BrowseTutorPage() {
                 <ShieldCheck size={14} /> Verified Expert Tutors
               </div>
               <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight">
-                Find the perfect <span className="text-indigo-600">tutor</span> for your goals.
+                Find the perfect <span className="text-indigo-600">tutor</span>{" "}
+                for your goals.
               </h1>
               <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                Connect with 1,200+ expert educators across {categories.length} categories. 
-                Filter by subject, price, and rating to find your match.
+                Connect with 1,200+ expert educators across {categories.length}{" "}
+                categories. Filter by subject, price, and rating to find your
+                match.
               </p>
             </div>
             <div className="flex-shrink-0 grid grid-cols-2 gap-4">
@@ -166,7 +192,10 @@ export default function BrowseTutorPage() {
                   <Search size={16} className="text-indigo-600" /> Search
                 </h3>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                  <Search
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={16}
+                  />
                   <input
                     type="text"
                     value={searchTerm}
@@ -180,7 +209,8 @@ export default function BrowseTutorPage() {
               {/* Category Filter */}
               <div className="rounded-3xl bg-white border border-slate-200 p-6 shadow-sm">
                 <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
-                  <LayoutGrid size={16} className="text-indigo-600" /> Categories
+                  <LayoutGrid size={16} className="text-indigo-600" />{" "}
+                  Categories
                 </h3>
                 <div className="space-y-1">
                   <button
@@ -240,7 +270,12 @@ export default function BrowseTutorPage() {
               </div>
 
               <button
-                onClick={() => { setSearchTerm(""); setSelectedCategoryId(null); setMaxPrice(5000); setMinRating(0); }}
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedCategoryId(null);
+                  setMaxPrice(5000);
+                  setMinRating(0);
+                }}
                 className="w-full py-3 text-sm font-bold text-slate-400 hover:text-rose-500 transition-colors"
               >
                 Reset all filters
@@ -260,16 +295,19 @@ export default function BrowseTutorPage() {
             </div>
 
             {isLoading ? (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-96 rounded-[32px] bg-white border border-slate-200 animate-pulse" />
-                ))}
+              <div className="flex flex-col items-center justify-center py-20">
+                <LoaderCircle className="animate-spin h-12 w-12 text-indigo-600" />
+                <p className="mt-4 text-lg text-slate-500">Loading tutors...</p>
               </div>
             ) : filteredTutors.length === 0 ? (
               <div className="bg-white border border-slate-200 rounded-[32px] p-20 text-center">
                 <div className="text-5xl mb-6">🔍</div>
-                <h3 className="text-xl font-bold text-slate-900">No tutors match your search</h3>
-                <p className="mt-2 text-slate-500">Try adjusting your filters or clearing the search box.</p>
+                <h3 className="text-xl font-bold text-slate-900">
+                  No tutors match your search
+                </h3>
+                <p className="mt-2 text-slate-500">
+                  Try adjusting your filters or clearing the search box.
+                </p>
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
@@ -291,14 +329,19 @@ export default function BrowseTutorPage() {
                         </div>
                         <div className="mt-1 flex items-center gap-2">
                           <StarRating rating={tutor.avgRating} />
-                          <span className="text-xs font-bold text-slate-400">{tutor.avgRating.toFixed(1)}</span>
+                          <span className="text-xs font-bold text-slate-400">
+                            {tutor.avgRating.toFixed(1)}
+                          </span>
                         </div>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap gap-1.5 mb-4 h-12 overflow-hidden">
                       {tutor.categories.map((c) => (
-                        <span key={c.categoryId} className="px-2 py-0.5 rounded-full bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500">
+                        <span
+                          key={c.categoryId}
+                          className="px-2 py-0.5 rounded-full bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-500"
+                        >
                           {c.category.name}
                         </span>
                       ))}
@@ -310,8 +353,12 @@ export default function BrowseTutorPage() {
 
                     <div className="flex items-center justify-between pt-4 border-t border-slate-50">
                       <div>
-                        <div className="text-xl font-bold text-slate-900">${tutor.hourlyRate}</div>
-                        <div className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Per Hour</div>
+                        <div className="text-xl font-bold text-slate-900">
+                          ${tutor.hourlyRate}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                          Per Hour
+                        </div>
                       </div>
                       <Link
                         href={`/tutors/${tutor.id}`}

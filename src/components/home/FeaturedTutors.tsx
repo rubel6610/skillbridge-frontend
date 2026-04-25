@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, CalendarDays, ChevronRight, MapPin, ShieldCheck, Star } from "lucide-react";
+import Image from "next/image";
+import {
+  BookOpen,
+  CalendarDays,
+  ChevronRight,
+  Loader,
+  MapPin,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 
 export type TutorProfile = {
   id: number;
@@ -48,9 +57,11 @@ export const TutorAvatar = ({ tutor }: { tutor: TutorProfile }) => {
   ];
   const gradient = gradients[tutor.id % gradients.length];
   return tutor.imageUrl ? (
-    <img
+    <Image
       src={tutor.imageUrl}
       alt={tutor.user.name}
+      width={150}
+      height={150}
       className="h-full w-full object-cover"
     />
   ) : (
@@ -92,13 +103,11 @@ const FeaturedTutors = ({ tutors, isLoading }: FeaturedTutorsProps) => {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="h-64 animate-pulse rounded-3xl bg-white border border-slate-100"
-              />
-            ))}
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader className="animate-spin h-12 w-12 text-indigo-600" />
+            <p className="mt-4 text-lg text-slate-500">
+              Loading featured tutors...
+            </p>
           </div>
         ) : tutors.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-indigo-200 bg-white p-16 text-center">
@@ -127,9 +136,7 @@ const FeaturedTutors = ({ tutors, isLoading }: FeaturedTutorsProps) => {
                     </h3>
                     <div className="flex items-center gap-1 text-xs text-slate-400 mt-0.5">
                       <MapPin size={11} />
-                      <span className="truncate">
-                        {tutor.location || "—"}
-                      </span>
+                      <span className="truncate">{tutor.location || "—"}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-2">
                       <StarRating rating={tutor.avgRating} />
